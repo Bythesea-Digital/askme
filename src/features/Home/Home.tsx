@@ -1,18 +1,10 @@
 import illustrationImage from "../../assets/images/illustration.svg";
 import googleIconImage from "../../assets/images/google-icon.svg";
 import General from "../../shared/components/General";
-import { firebase, auth } from "../../services/firebaseService";
-import { useHistory } from "react-router-dom";
+import { useAuth } from "../../shared/hooks/useAuth";
 
 export function Home() {
-  const history = useHistory();
-  async function handleCreateRoom() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    const result = await auth.signInWithPopup(provider);
-    console.log(result);
-    history.push("/rooms/new");
-  }
+  const { logInWithGoogle } = useAuth();
 
   return (
     <div className="mx-auto h-screen sm:flex content-center ">
@@ -31,7 +23,7 @@ export function Home() {
       </aside>
       <main className="flex flex-col flex-1 justify-center p-8 items-center ">
         <button
-          onClick={handleCreateRoom}
+          onClick={logInWithGoogle}
           type="button"
           aria-label="Crea tu sala con Google"
           className="w-full sm:w-1/2 py-2 flex items-center font-medium justify-center rounded-md bg-red-500 hover:bg-red-600 text-white"

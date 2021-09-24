@@ -1,8 +1,11 @@
 import illustrationImage from "../../assets/images/illustration.svg";
 import General from "../../shared/components/General";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../shared/hooks/useAuth";
 
 export function NewRoom() {
+  const { userDetails } = useAuth();
+  const firstName = userDetails?.name?.split(" ")[0];
   return (
     <div className="mx-auto h-screen sm:flex content-center ">
       <aside className=" flex-1 mx-auto bg-purple-600 flex flex-col p-8 justify-center">
@@ -19,8 +22,8 @@ export function NewRoom() {
         </p>
       </aside>
       <main className="flex flex-col flex-1 justify-center p-8 items-center ">
-        <h2 className="mb-3 font-bold text-3xl text-gray-700">
-          Crear una sala
+        <h2 className="mb-3 font-bold text-2xl text-gray-700">
+          {firstName}, crea tu primera sala
         </h2>
         <form className="w-full sm:w-1/2">
           <input
