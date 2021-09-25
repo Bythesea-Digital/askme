@@ -1,27 +1,41 @@
-import illustrationImage from "../../assets/images/illustration.svg";
+import { FormEvent, useState } from "react";
 import googleIconImage from "../../assets/images/google-icon.svg";
+import meetAndAnswerLogo from "../../assets/branding/meetanswer-logo-light.svg";
 import General from "../../shared/components/General";
 import { useAuth } from "../../shared/hooks/useAuth";
+import HomeAside from "../../shared/components/HomeAside";
+import DataEntry from "../../shared/components/DataEntry";
+import { database } from "../../services/firebaseService";
+import { useHistory } from "react-router-dom";
 
 export function Home() {
   const { logInWithGoogle } = useAuth();
+  const history = useHistory();
+  const [roomCode, setRoomCode] = useState("");
+
+  async function handleJoinRoom(event: FormEvent) {
+    event.preventDefault();
+    if (roomCode.trim() === "") return;
+
+    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+    if (!roomRef.exists()) {
+      alert("La sala no existe");
+      return;
+    }
+
+    history.push(`/rooms/${roomRef.key}`);
+  }
 
   return (
     <div className="mx-auto h-screen sm:flex content-center ">
-      <aside className=" flex-1 mx-auto bg-purple-600 flex flex-col p-8 justify-center">
-        <img
-          className="w-3/5"
-          src={illustrationImage}
-          alt="Ilustración simbolizando preguntas y respuestas"
-        />
-        <h1 className="text-3xl font-bold text-purple-50">
-          Crea salas de Q&A en vivo
-        </h1>
-        <p className="text-purple-300 font-medium">
-          Resuelve las dudas de tu audiencia en tiempo real.
-        </p>
-      </aside>
+      <HomeAside />
       <main className="flex flex-col flex-1 justify-center p-8 items-center ">
+        <img
+          className="w-full sm:w-1/2 mb-10"
+          src={meetAndAnswerLogo}
+          alt="Logo de Meet and Answer"
+        />
         <button
           onClick={logInWithGoogle}
           type="button"
@@ -37,10 +51,10 @@ export function Home() {
           Crea tu sala con Google
         </button>
         <div className="my-4 text-base  text-gray-400">o entra en una sala</div>
-        <form className="w-full sm:w-1/2">
-          <input
-            className="w-full bg-purple-100  py-2 px-4 placeholder-gray-500 rounded-md mb-3 placeholder-purple-400 "
+        <form onSubmit={handleJoinRoom} className="w-full sm:w-1/2">
+          <DataEntry.Input
             type="text"
+            onChange={(e) => setRoomCode(e.target.value)}
             placeholder="Digita el código de la sala"
           />
           <General.Button type="submit">Entrar a la sala</General.Button>
