@@ -1,11 +1,12 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { auth, firebase } from "../services/firebaseService";
-import { useHistory } from "react-router-dom";
-import { GoogleUser } from "../models/User/GoogleUser";
+import { useHistory, useLocation } from "react-router-dom";
+import UserEntity from "../models/entity/UserEntity";
+import useRoom from "../shared/hooks/useRoom";
 
 type AuthContextType = {
   logInWithGoogle: () => Promise<void>;
-  userDetails: GoogleUser;
+  userDetails: UserEntity;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -16,8 +17,11 @@ type AuthContextProps = {
 
 export function AuthContextProvider({ children }: AuthContextProps) {
   const history = useHistory();
+  const location = useLocation();
 
-  const [userDetails, setUserDetails] = useState({} as GoogleUser);
+  console.log({ location });
+
+  const [userDetails, setUserDetails] = useState({} as UserEntity);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -36,11 +40,14 @@ export function AuthContextProvider({ children }: AuthContextProps) {
       const provider = new firebase.auth.GoogleAuthProvider();
 
       const result = await auth.signInWithPopup(provider);
+      console.log(result);
       if (result.user) {
         setUser(result.user);
       }
     }
-    history.push("/rooms/new");
+    if (location.pathname === "/") {
+      history.push("/rooms/new");
+    }
   }
 
   console.log(userDetails);

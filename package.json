@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "craco start",
+    "start": "craco start -p 3000",
     "build": "craco build",
     "test": "craco test",
     "watch:css": "postcss -w src/styles/tailwind.css -o src/styles/output.css"

@@ -7,6 +7,7 @@ import HomeAside from "../../shared/components/HomeAside";
 import DataEntry from "../../shared/components/DataEntry";
 import { database } from "../../services/firebaseService";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export function Home() {
   const { logInWithGoogle } = useAuth();
@@ -20,7 +21,7 @@ export function Home() {
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert("La sala no existe");
+      toast.error("La sala no existe");
       return;
     }
 
