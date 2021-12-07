@@ -4,9 +4,11 @@ import "./styles/tailwind.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./services/firebaseService";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.render(
   <React.StrictMode>
+    <Toaster />
     <App />
   </React.StrictMode>,
   document.getElementById("root")

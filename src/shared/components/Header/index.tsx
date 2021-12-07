@@ -1,17 +1,10 @@
 import React from "react";
 import meetNAnswerLogo from "../../../assets/branding/meetanswer-logo-light.svg";
 import RoomCode from "./components/RoomCode";
-import { useParams } from "react-router-dom";
-type HeaderProps = {
-  roomId: string;
-};
+import useRoom from "../../hooks/useRoom";
 
-type RoomParams = {
-  id: string;
-};
-
-export default function Header({ roomId }: HeaderProps) {
-  const params = useParams<RoomParams>();
+export default function Header() {
+  const { roomId } = useRoom();
   return (
     <header className="flex justify-between items-center bg-blue-50 px-4 sm:px-32 py-4">
       <img
@@ -20,7 +13,7 @@ export default function Header({ roomId }: HeaderProps) {
         alt="Logo de Meet and Answer"
       />
       <div className="flex justify-between">
-        <RoomCode code={params.id} />
+        <RoomCode code={roomId} />
       </div>
     </header>
   );
