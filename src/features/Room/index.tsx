@@ -16,7 +16,7 @@ export default function Room() {
 
         <form>
           <textarea
-            className="w-full bg-pink-50 placeholder-pink-300 px-2 py-3 rounded-md"
+            className="w-full bg-pink-50 placeholder-pink-300 px-2 py-3 rounded-md "
             placeholder="Haz tu pregunta"
           />
 
